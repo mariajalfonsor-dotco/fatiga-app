@@ -398,7 +398,12 @@ with tab_tel:
                                 st.session_state.eventos_video = ev_ocr if len(ev_ocr) else None
                             except ocr_reportes.OCRNoDisponible as e:
                                 st.session_state.ocr_result = None
-                                st.error(str(e))
+                                if MODO_PUBLICO:
+                                    st.warning("La lectura de imágenes con OCR no está disponible en la versión "
+                                               "pública. Usa la app en tu computador, o sube un CSV o un PDF "
+                                               "que tenga tablas con texto.")
+                                else:
+                                    st.error(str(e))
                 ocr = st.session_state.get("ocr_result")
                 if ocr and ocr["archivo"] == up_p.name:
                     var_ocr = _mostrar_ocr(ocr["res"])
